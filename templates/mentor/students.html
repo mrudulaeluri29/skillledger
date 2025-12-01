@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}My Students{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-people"></i> My Students</h2>
+    
+    {% if students %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Major</th>
+                        <th>Year</th>
+                        <th>Department</th>
+                        <th>Internships</th>
+                        <th>Verified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td><strong>{{ student.name }}</strong></td>
+                        <td>{{ student.email }}</td>
+                        <td>{{ student.major }}</td>
+                        <td>{{ student.year }}</td>
+                        <td>{{ student.department }}</td>
+                        <td>{{ student.internships|length }}</td>
+                        <td>
+                            {{ student.internships|selectattr('verified')|list|length }} / {{ student.internships|length }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No students assigned to you yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

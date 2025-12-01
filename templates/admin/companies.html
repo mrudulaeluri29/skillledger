@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Companies{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-building"></i> Manage Companies</h2>
+    
+    {% if companies %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Company Name</th>
+                        <th>Email</th>
+                        <th>Industry</th>
+                        <th>Status</th>
+                        <th>Postings</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for company in companies %}
+                    <tr>
+                        <td>{{ company.company_id }}</td>
+                        <td><strong>{{ company.name }}</strong></td>
+                        <td>{{ company.email }}</td>
+                        <td>{{ company.industry or 'N/A' }}</td>
+                        <td>
+                            {% if company.verified_status == 'Verified' %}
+                                <span class="badge bg-success">Verified</span>
+                            {% elif company.verified_status == 'Pending' %}
+                                <span class="badge bg-warning">Pending</span>
+                            {% else %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ company.postings|length }}</td>
+                        <td>
+                            {% if company.verified_status == 'Pending' %}
+                            <div class="btn-group btn-group-sm">
+                                <form method="POST" action="{{ url_for('admin.verify_company', company_id=company.company_id) }}" style="display: inline;">
+                                    <input type="hidden" name="status" value="Verified">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-check-circle"></i> Verify
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ url_for('admin.verify_company', company_id=company.company_id) }}" style="display: inline;">
+                                    <input type="hidden" name="status" value="Rejected">
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="bi bi-x-circle"></i> Reject
+                                    </button>
+                                </form>
+                            </div>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No companies registered yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

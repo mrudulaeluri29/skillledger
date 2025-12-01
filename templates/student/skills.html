@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}My Skills - SkillLedger{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="bi bi-clipboard-data"></i> My Skills</h4>
+            </div>
+            <div class="card-body">
+                {% if student_skills %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Category</th>
+                                    <th>Proficiency Level</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ss in student_skills %}
+                                <tr>
+                                    <td><strong>{{ ss.skill.skill_name }}</strong></td>
+                                    <td><span class="badge bg-info">{{ ss.skill.category }}</span></td>
+                                    <td>
+                                        {% if ss.proficiency_level == 1 %}
+                                            <span class="badge bg-secondary">Beginner</span>
+                                        {% elif ss.proficiency_level == 2 %}
+                                            <span class="badge bg-primary">Intermediate</span>
+                                        {% elif ss.proficiency_level == 3 %}
+                                            <span class="badge bg-success">Advanced</span>
+                                        {% elif ss.proficiency_level == 4 %}
+                                            <span class="badge bg-warning">Expert</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="{{ url_for('student.remove_skill', skill_id=ss.skill_id) }}" style="display:inline;">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Remove this skill?')">
+                                                <i class="bi bi-trash"></i> Remove
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> You haven't added any skills yet. Add your first skill using the form on the right!
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-plus-circle"></i> Add New Skill</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('student.add_skill') }}">
+                    <div class="mb-3">
+                        <label for="skill_id" class="form-label">Select Skill <span class="text-danger">*</span></label>
+                        <select class="form-select" id="skill_id" name="skill_id" required>
+                            <option value="">Choose a skill...</option>
+                            {% for skill in all_skills %}
+                                <option value="{{ skill.skill_id }}">{{ skill.skill_name }} ({{ skill.category }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="proficiency_level" class="form-label">Proficiency Level <span class="text-danger">*</span></label>
+                        <select class="form-select" id="proficiency_level" name="proficiency_level" required>
+                            <option value="">Select level...</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                            <option value="Expert">Expert</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-plus-lg"></i> Add Skill
+                    </button>
+                </form>
+                
+                <hr>
+                
+                <div class="mt-3">
+                    <h6 class="text-muted">Proficiency Levels:</h6>
+                    <ul class="small text-muted">
+                        <li><strong>Beginner:</strong> Learning basics</li>
+                        <li><strong>Intermediate:</strong> Comfortable with common tasks</li>
+                        <li><strong>Advanced:</strong> Can handle complex scenarios</li>
+                        <li><strong>Expert:</strong> Deep knowledge & experience</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

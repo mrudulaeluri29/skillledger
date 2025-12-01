@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Applications{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-file-earmark-text"></i> All Applications</h2>
+    
+    {% if applications %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Applicant</th>
+                        <th>Position</th>
+                        <th>Email</th>
+                        <th>Major</th>
+                        <th>Skills</th>
+                        <th>Applied On</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                    <tr>
+                        <td><strong>{{ app.student.name }}</strong></td>
+                        <td>{{ app.posting.title }}</td>
+                        <td>{{ app.student.email }}</td>
+                        <td>{{ app.student.major }}</td>
+                        <td>
+                            {% if app.student.skills %}
+                                {% for ss in app.student.skills[:3] %}
+                                    <span class="badge bg-secondary">{{ ss.skill.skill_name }}</span>
+                                {% endfor %}
+                                {% if app.student.skills|length > 3 %}
+                                    <span class="badge bg-light text-dark">+{{ app.student.skills|length - 3 }} more</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-muted">No skills listed</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ app.applied_on.strftime('%b %d, %Y') }}</td>
+                        <td>
+                            {% if app.status == 'Applied' %}
+                                <span class="badge bg-primary">Applied</span>
+                            {% elif app.status == 'UnderReview' %}
+                                <span class="badge bg-info">Under Review</span>
+                            {% elif app.status == 'Interview' %}
+                                <span class="badge bg-warning">Interview</span>
+                            {% elif app.status == 'Offer' %}
+                                <span class="badge bg-success">Offer</span>
+                            {% elif app.status == 'Rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% elif app.status == 'Withdrawn' %}
+                                <span class="badge bg-secondary">Withdrawn</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ app.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" 
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    Update Status
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <form method="POST" action="{{ url_for('company.update_application_status', application_id=app.application_id) }}">
+                                            <input type="hidden" name="status" value="UnderReview">
+                                            <button type="submit" class="dropdown-item">Under Review</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form method="POST" action="{{ url_for('company.update_application_status', application_id=app.application_id) }}">
+                                            <input type="hidden" name="status" value="Interview">
+                                            <button type="submit" class="dropdown-item">Interview</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form method="POST" action="{{ url_for('company.update_application_status', application_id=app.application_id) }}">
+                                            <input type="hidden" name="status" value="Offer">
+                                            <button type="submit" class="dropdown-item">Offer</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form method="POST" action="{{ url_for('company.update_application_status', application_id=app.application_id) }}">
+                                            <input type="hidden" name="status" value="Rejected">
+                                            <button type="submit" class="dropdown-item">Reject</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No applications received yet. Students will see your postings once they're active!
+        </div>
+        <a href="{{ url_for('company.postings') }}" class="btn btn-primary">
+            <i class="bi bi-briefcase"></i> View Postings
+        </a>
+    {% endif %}
+</div>
+{% endblock %}

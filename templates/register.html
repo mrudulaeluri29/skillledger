@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Register - SkillLedger{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="bi bi-person-plus"></i> Register</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="registerForm">
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Register As</label>
+                        <select class="form-select" id="role" name="role" required onchange="toggleFields()">
+                            <option value="">Select Role</option>
+                            <option value="STUDENT">Student</option>
+                            <option value="COMPANY">Company</option>
+                        </select>
+                        <small class="text-muted">Note: Mentor and Admin accounts are created by administrators</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                    </div>
+                    
+                    <div id="studentFields" style="display:none;">
+                        <div class="mb-3">
+                            <label for="major" class="form-label">Major <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="major" name="major" placeholder="e.g., Computer Science">
+                        </div>
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Year <span class="text-danger">*</span></label>
+                            <select class="form-select" id="year" name="year">
+                                <option value="">Select Year</option>
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                                <option value="5">5th Year</option>
+                                <option value="6">6th Year</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="department" name="department" placeholder="e.g., Computer Science and Engineering">
+                        </div>
+                    </div>
+                    
+                    <div id="companyFields" style="display:none;">
+                        <div class="mb-3">
+                            <label for="industry" class="form-label">Industry <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="industry" name="industry" placeholder="e.g., Technology, Finance, Healthcare">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </form>
+                <hr>
+                <p class="text-center mb-0">
+                    Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleFields() {
+    var role = document.getElementById('role').value;
+    var studentFields = document.getElementById('studentFields');
+    var companyFields = document.getElementById('companyFields');
+    
+    if (role === 'STUDENT') {
+        studentFields.style.display = 'block';
+        companyFields.style.display = 'none';
+        document.getElementById('major').required = true;
+        document.getElementById('year').required = true;
+        document.getElementById('department').required = true;
+        document.getElementById('industry').required = false;
+    } else if (role === 'COMPANY') {
+        studentFields.style.display = 'none';
+        companyFields.style.display = 'block';
+        document.getElementById('major').required = false;
+        document.getElementById('year').required = false;
+        document.getElementById('department').required = false;
+        document.getElementById('industry').required = true;
+    } else {
+        studentFields.style.display = 'none';
+        companyFields.style.display = 'none';
+        document.getElementById('major').required = false;
+        document.getElementById('year').required = false;
+        document.getElementById('department').required = false;
+        document.getElementById('industry').required = false;
+    }
+}
+
+// Validate form before submission
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    var role = document.getElementById('role').value;
+    
+    if (role === 'STUDENT') {
+        var major = document.getElementById('major').value.trim();
+        var year = document.getElementById('year').value;
+        var department = document.getElementById('department').value.trim();
+        
+        if (!major || !year || !department) {
+            e.preventDefault();
+            alert('Please fill in all required fields for student registration.');
+            return false;
+        }
+    } else if (role === 'COMPANY') {
+        var industry = document.getElementById('industry').value.trim();
+        
+        if (!industry) {
+            e.preventDefault();
+            alert('Please fill in the industry field for company registration.');
+            return false;
+        }
+    }
+});
+</script>
+{% endblock %}

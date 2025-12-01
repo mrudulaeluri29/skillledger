@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Share Internship Experience{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="bi bi-share"></i> Share Your Experience</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <strong>{{ internship.position }}</strong> at {{ internship.organization }}
+                        <br>
+                        <small>{{ internship.start_date.strftime('%B %Y') }} - {{ internship.end_date.strftime('%B %Y') }}</small>
+                    </div>
+                    
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Share your experience <span class="text-danger">*</span></label>
+                            <textarea name="content" id="content" class="form-control" rows="8" 
+                                      placeholder="Describe your internship experience, key learnings, projects you worked on, skills you gained..." 
+                                      required></textarea>
+                            <div class="form-text">Share insights that would help other students!</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="visibility" class="form-label">Visibility <span class="text-danger">*</span></label>
+                            <select name="visibility" id="visibility" class="form-select" required>
+                                <option value="Public" selected>Public - Visible to everyone</option>
+                                <option value="Private">Private - Only visible to you</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send"></i> Post to Feed
+                            </button>
+                            <a href="{{ url_for('student.view_internship', internship_id=internship.internship_id) }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}{{ posting.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3><i class="bi bi-briefcase"></i> Posting Details</h3>
+                    {% if posting.is_active %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Inactive</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h4>{{ posting.title }}</h4>
+                    <h5 class="text-muted">{{ current_user.name }}</h5>
+                    
+                    <hr>
+                    
+                    <div class="mb-3">
+                        {% if posting.location %}
+                        <p><strong><i class="bi bi-geo-alt"></i> Location:</strong> {{ posting.location }}</p>
+                        {% endif %}
+                        
+                        {% if posting.duration %}
+                        <p><strong><i class="bi bi-clock"></i> Duration:</strong> {{ posting.duration }}</p>
+                        {% endif %}
+                        
+                        {% if posting.application_deadline %}
+                        <p><strong><i class="bi bi-calendar-event"></i> Application Deadline:</strong> {{ posting.application_deadline.strftime('%B %d, %Y') }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <h6 class="mt-4">Description:</h6>
+                    <p style="white-space: pre-wrap;">{{ posting.description }}</p>
+                    
+                    <hr>
+                    
+                    <div class="d-flex gap-2">
+                        <form method="POST" action="{{ url_for('company.toggle_posting', posting_id=posting.posting_id) }}">
+                            <button type="submit" class="btn btn-{{ 'warning' if posting.is_active else 'success' }}">
+                                <i class="bi bi-{{ 'pause' if posting.is_active else 'play' }}-circle"></i>
+                                {{ 'Deactivate' if posting.is_active else 'Activate' }} Posting
+                            </button>
+                        </form>
+                        <a href="{{ url_for('company.postings') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Postings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-file-earmark-text"></i> Applications</h5>
+                </div>
+                <div class="card-body">
+                    <h2 class="text-center">{{ posting.applications|length }}</h2>
+                    <p class="text-center text-muted">Total Applications</p>
+                    
+                    {% if posting.applications %}
+                    <hr>
+                    <h6>Status Breakdown:</h6>
+                    <ul class="list-unstyled">
+                        <li><span class="badge bg-primary">Applied:</span> {{ posting.applications|selectattr('status', 'equalto', 'Applied')|list|length }}</li>
+                        <li><span class="badge bg-info">Under Review:</span> {{ posting.applications|selectattr('status', 'equalto', 'UnderReview')|list|length }}</li>
+                        <li><span class="badge bg-warning">Interview:</span> {{ posting.applications|selectattr('status', 'equalto', 'Interview')|list|length }}</li>
+                        <li><span class="badge bg-success">Offer:</span> {{ posting.applications|selectattr('status', 'equalto', 'Offer')|list|length }}</li>
+                        <li><span class="badge bg-danger">Rejected:</span> {{ posting.applications|selectattr('status', 'equalto', 'Rejected')|list|length }}</li>
+                    </ul>
+                    <a href="{{ url_for('company.applications') }}" class="btn btn-primary w-100 mt-2">
+                        View All Applications
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

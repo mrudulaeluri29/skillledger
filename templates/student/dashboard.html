@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">
+    <i class="bi bi-speedometer2"></i> Welcome, {{ current_user.name }}
+</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h1 class="display-4">{{ internships|length }}</h1>
+                <p class="text-muted">Total Internships</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h1 class="display-4">{{ pending_count }}</h1>
+                <p class="text-muted">Pending Verification</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h1 class="display-4">{{ verified_count }}</h1>
+                <p class="text-muted">Verified Internships</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="bi bi-briefcase"></i> Quick Actions</h4>
+            </div>
+            <div class="card-body">
+                <a href="{{ url_for('student.add_internship') }}" class="btn btn-primary me-2">
+                    <i class="bi bi-plus-circle"></i> Add Internship
+                </a>
+                <a href="{{ url_for('student.skills') }}" class="btn btn-info me-2">
+                    <i class="bi bi-gear"></i> Manage Skills
+                </a>
+                <a href="{{ url_for('student.view_postings') }}" class="btn btn-success me-2">
+                    <i class="bi bi-building"></i> Browse Postings
+                </a>
+                <a href="{{ url_for('feed.index') }}" class="btn btn-warning">
+                    <i class="bi bi-chat-dots"></i> View Feed
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="bi bi-list-check"></i> Recent Internships</h4>
+            </div>
+            <div class="card-body">
+                {% if internships %}
+                    <div class="list-group">
+                        {% for internship in internships[:5] %}
+                        <a href="{{ url_for('student.view_internship', internship_id=internship.internship_id) }}" 
+                           class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ internship.position }}</h5>
+                                <small>
+                                    {% if internship.verified %}
+                                        <span class="badge badge-verified">Verified</span>
+                                    {% elif internship.status == 'Submitted' %}
+                                        <span class="badge badge-pending">Pending</span>
+                                    {% elif internship.status == 'Rejected' %}
+                                        <span class="badge badge-rejected">Rejected</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Draft</span>
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <p class="mb-1">{{ internship.organization }}</p>
+                            <small>{{ internship.start_date }} - {{ internship.end_date }}</small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">No internships recorded yet.</p>
+                    <a href="{{ url_for('student.add_internship') }}" class="btn btn-primary">
+                        Add Your First Internship
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="bi bi-building"></i> Available Postings</h4>
+            </div>
+            <div class="card-body">
+                {% if postings %}
+                    <div class="list-group">
+                        {% for posting in postings %}
+                        <div class="list-group-item">
+                            <h6>{{ posting.title }}</h6>
+                            <small class="text-muted">{{ posting.company.name }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a href="{{ url_for('student.view_postings') }}" class="btn btn-sm btn-outline-primary mt-2">
+                        View All Postings
+                    </a>
+                {% else %}
+                    <p class="text-muted">No active postings</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}SkillLedger - Home{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+    
+    .hero-section {
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        color: white;
+        padding: 100px 0;
+        margin-left: calc(-50vw + 50%);
+        margin-right: calc(-50vw + 50%);
+        margin-top: -20px;
+        margin-bottom: 60px;
+    }
+    
+    .hero-section h1 {
+        font-size: 5.5rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+    
+    .hero-section .lead {
+        font-size: 2.2rem;
+        font-weight: 300;
+        margin-bottom: 20px;
+    }
+    
+    .hero-section .subtitle {
+        font-size: 1.6rem;
+        opacity: 0.9;
+    }
+    
+    .feature-card {
+        background: white;
+        border: none;
+        border-radius: 20px;
+        padding: 40px 30px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        transition: all 0.4s ease;
+        height: 100%;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    
+    .feature-card i {
+        font-size: 4rem;
+        margin-bottom: 25px;
+        display: block;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+    
+    .feature-card p {
+        font-size: 1.15rem;
+        color: #6c757d;
+        line-height: 1.7;
+    }
+    
+    .cta-section {
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        padding: 80px 60px;
+        border-radius: 30px;
+        margin: 60px 0;
+        text-align: center;
+        color: white;
+    }
+    
+    .cta-section h2 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    
+    .cta-section .lead {
+        font-size: 1.4rem;
+        margin-bottom: 40px;
+        opacity: 0.95;
+    }
+    
+    .btn-cta {
+        padding: 20px 50px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .btn-cta-primary {
+        background: white;
+        color: #2c3e50;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .btn-cta-primary:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        color: #2c3e50;
+    }
+    
+    .btn-cta-secondary {
+        background: transparent;
+        color: white;
+        border: 3px solid white;
+    }
+    
+    .btn-cta-secondary:hover {
+        background: white;
+        color: #2c3e50;
+        transform: translateY(-5px);
+    }
+    
+    .features-section {
+        padding: 60px 0;
+    }
+    
+    .features-section h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 50px;
+        text-align: center;
+        color: #2c3e50;
+    }
+    
+    .feature-list-card {
+        background: white;
+        border-radius: 20px;
+        padding: 50px 40px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        height: 100%;
+    }
+    
+    .feature-list-card h4 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 35px;
+        color: #2c3e50;
+    }
+    
+    .feature-list-item {
+        padding: 20px 0;
+        border-bottom: 2px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        font-size: 1.15rem;
+    }
+    
+    .feature-list-item:last-child {
+        border-bottom: none;
+    }
+    
+    .feature-list-item i {
+        color: #3498db;
+        margin-right: 20px;
+        font-size: 1.8rem;
+        min-width: 30px;
+    }
+</style>
+
+<div class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto text-center">
+                <h1>
+                    <i class="bi bi-award-fill"></i> SkillLedger
+                </h1>
+                <p class="lead">Your Professional Journey, Verified & Showcased</p>
+                <p class="subtitle">Track internships, get mentor verification, and share your achievements with the world</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-5 g-4">
+        <div class="col-md-4">
+            <div class="card feature-card text-center">
+                <i class="bi bi-journal-check text-primary"></i>
+                <h3>Track Internships</h3>
+                <p>Log your internships, upload certificates, and maintain a verified professional record</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card feature-card text-center">
+                <i class="bi bi-shield-check text-success"></i>
+                <h3>Get Verified</h3>
+                <p>Mentors verify your experiences with ratings and feedback for authenticity</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card feature-card text-center">
+                <i class="bi bi-share text-info"></i>
+                <h3>Share Experiences</h3>
+                <p>Post verified internships on the public feed and inspire other students</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <h2>Ready to Start Your Journey?</h2>
+        <p class="lead">Join thousands of students building their professional portfolio</p>
+        <div class="d-flex gap-4 justify-content-center flex-wrap">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-cta btn-cta-primary">
+                <i class="bi bi-person-plus me-2"></i> Create Account
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-cta btn-cta-secondary">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Sign In
+            </a>
+        </div>
+    </div>
+
+    <div class="features-section">
+        <h2>Everything You Need to Succeed</h2>
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <div class="feature-list-card">
+                    <h4>
+                        <i class="bi bi-person-badge text-primary"></i> For Students
+                    </h4>
+                    <div class="feature-list-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Log and manage internship experiences</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-file-earmark-check-fill"></i>
+                        <span>Upload certificates and proof documents</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        <span>Track verification status in real-time</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-clipboard-data"></i>
+                        <span>Build and manage skill portfolio</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-briefcase-fill"></i>
+                        <span>Apply to company internship postings</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-chat-left-heart-fill"></i>
+                        <span>Share verified experiences on public feed</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="feature-list-card">
+                    <h4>
+                        <i class="bi bi-people text-primary"></i> For Mentors & Admins
+                    </h4>
+                    <div class="feature-list-item">
+                        <i class="bi bi-shield-fill-check"></i>
+                        <span>Review and verify student internships</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-star-fill"></i>
+                        <span>Provide ratings and detailed feedback</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-activity"></i>
+                        <span>Monitor verification health metrics</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-bar-chart-fill"></i>
+                        <span>Access comprehensive analytics dashboard</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Manage students and skills catalog</span>
+                    </div>
+                    <div class="feature-list-item">
+                        <i class="bi bi-building-fill-check"></i>
+                        <span>Verify company authenticity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

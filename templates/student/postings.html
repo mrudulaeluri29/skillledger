@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Internship Postings{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-briefcase"></i> Browse Internship Postings</h2>
+    </div>
+
+    {% if postings %}
+        <div class="row">
+            {% for posting in postings %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title">{{ posting.title }}</h5>
+                            {% if posting.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Closed</span>
+                            {% endif %}
+                        </div>
+                        
+                        <h6 class="text-muted mb-3">
+                            <i class="bi bi-building"></i> {{ posting.company.name }}
+                        </h6>
+                        
+                        <p class="card-text">{{ posting.description[:200] }}{% if posting.description|length > 200 %}...{% endif %}</p>
+                        
+                        <div class="mb-3">
+                            {% if posting.location %}
+                            <p class="mb-1">
+                                <i class="bi bi-geo-alt"></i> <strong>Location:</strong> {{ posting.location }}
+                            </p>
+                            {% endif %}
+                            
+                            {% if posting.duration %}
+                            <p class="mb-1">
+                                <i class="bi bi-clock"></i> <strong>Duration:</strong> {{ posting.duration }}
+                            </p>
+                            {% endif %}
+                            
+                            {% if posting.application_deadline %}
+                            <p class="mb-1">
+                                <i class="bi bi-calendar-event"></i> <strong>Deadline:</strong> {{ posting.application_deadline.strftime('%B %d, %Y') }}
+                            </p>
+                            {% endif %}
+                        </div>
+                        
+                        {% if posting.posting_id in application_dict %}
+                            {% set app_status = application_dict[posting.posting_id].status %}
+                            {% if app_status == 'Applied' %}
+                                <button class="btn btn-primary w-100" disabled>
+                                    <i class="bi bi-check-circle"></i> Applied
+                                </button>
+                            {% elif app_status == 'UnderReview' %}
+                                <button class="btn btn-info w-100" disabled>
+                                    <i class="bi bi-hourglass-split"></i> Under Review
+                                </button>
+                            {% elif app_status == 'Interview' %}
+                                <button class="btn btn-warning w-100" disabled>
+                                    <i class="bi bi-calendar-check"></i> Interview
+                                </button>
+                            {% elif app_status == 'Offer' %}
+                                <button class="btn btn-success w-100" disabled>
+                                    <i class="bi bi-check-circle-fill"></i> Offer
+                                </button>
+                            {% elif app_status == 'Rejected' %}
+                                <button class="btn btn-danger w-100" disabled>
+                                    <i class="bi bi-x-circle"></i> Rejected
+                                </button>
+                            {% elif app_status == 'Withdrawn' %}
+                                <button class="btn btn-secondary w-100" disabled>
+                                    <i class="bi bi-arrow-counterclockwise"></i> Withdrawn
+                                </button>
+                            {% else %}
+                                <button class="btn btn-secondary w-100" disabled>
+                                    <i class="bi bi-info-circle"></i> {{ app_status }}
+                                </button>
+                            {% endif %}
+                        {% else %}
+                            <form method="POST" action="{{ url_for('student.apply_posting', posting_id=posting.posting_id) }}">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-send"></i> Apply Now
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No internship postings available at the moment. Check back later!
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

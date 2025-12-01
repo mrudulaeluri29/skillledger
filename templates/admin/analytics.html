@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Platform Analytics{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-bar-chart"></i> Platform Analytics</h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-trophy"></i> Top Skills</h5>
+                </div>
+                <div class="card-body">
+                    {% if top_skills %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Skill Name</th>
+                                    <th>Number of Students</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for skill in top_skills %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td><strong>{{ skill[0] }}</strong></td>
+                                    <td>{{ skill[1] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-muted">No skill data available</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-diagram-3"></i> Internships by Department</h5>
+                </div>
+                <div class="card-body">
+                    {% if dept_internships %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Total Internships</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for dept in dept_internships %}
+                                <tr>
+                                    <td><strong>{{ dept[0] }}</strong></td>
+                                    <td>{{ dept[1] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-muted">No internship data available</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-shield-check"></i> Mentor Verification Statistics</h5>
+                </div>
+                <div class="card-body">
+                    {% if mentor_stats %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Mentor Name</th>
+                                    <th>Total Verifications</th>
+                                    <th>Approved</th>
+                                    <th>Approval Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for stat in mentor_stats %}
+                                <tr>
+                                    <td><strong>{{ stat[0] }}</strong></td>
+                                    <td>{{ stat[1] }}</td>
+                                    <td>{{ stat[2] or 0 }}</td>
+                                    <td>
+                                        {% if stat[1] > 0 %}
+                                            {{ ((stat[2] or 0) / stat[1] * 100)|round(1) }}%
+                                        {% else %}
+                                            0%
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-muted">No verification data available</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

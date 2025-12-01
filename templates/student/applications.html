@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}My Applications{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-file-earmark-text"></i> My Applications</h2>
+
+    {% if applications %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Company</th>
+                        <th>Location</th>
+                        <th>Applied On</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                    <tr>
+                        <td><strong>{{ app.posting.title }}</strong></td>
+                        <td>{{ app.posting.company.name }}</td>
+                        <td>{{ app.posting.location or 'Not specified' }}</td>
+                        <td>{{ app.applied_on.strftime('%B %d, %Y') }}</td>
+                        <td>
+                            {% if app.status == 'Applied' %}
+                                <span class="badge bg-primary">Applied</span>
+                            {% elif app.status == 'UnderReview' %}
+                                <span class="badge bg-info">Under Review</span>
+                            {% elif app.status == 'Interview' %}
+                                <span class="badge bg-warning">Interview</span>
+                            {% elif app.status == 'Offer' %}
+                                <span class="badge bg-success">Offer</span>
+                            {% elif app.status == 'Rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% elif app.status == 'Withdrawn' %}
+                                <span class="badge bg-secondary">Withdrawn</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ app.status }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> You haven't applied to any internships yet. Browse available postings to get started!
+        </div>
+        <a href="{{ url_for('student.view_postings') }}" class="btn btn-primary">
+            <i class="bi bi-briefcase"></i> Browse Postings
+        </a>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Skills{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-tools"></i> Manage Skills Catalog</h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-plus-circle"></i> Add New Skill</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('admin.add_skill') }}">
+                        <div class="mb-3">
+                            <label for="skill_name" class="form-label">Skill Name <span class="text-danger">*</span></label>
+                            <input type="text" name="skill_name" id="skill_name" class="form-control" 
+                                   placeholder="e.g., Python, JavaScript" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+                            <select name="category" id="category" class="form-select" required>
+                                <option value="">Select Category</option>
+                                <option value="Programming">Programming</option>
+                                <option value="Web Development">Web Development</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Mobile Development">Mobile Development</option>
+                                <option value="Cloud">Cloud</option>
+                                <option value="Database">Database</option>
+                                <option value="DevOps">DevOps</option>
+                                <option value="Design">Design</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-plus-circle"></i> Add Skill
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-list"></i> Skills Catalog</h5>
+                </div>
+                <div class="card-body">
+                    {% if skills %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Skill Name</th>
+                                        <th>Category</th>
+                                        <th>Users</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for skill in skills %}
+                                    <tr>
+                                        <td>{{ skill.skill_id }}</td>
+                                        <td><strong>{{ skill.skill_name }}</strong></td>
+                                        <td><span class="badge bg-info">{{ skill.category }}</span></td>
+                                        <td>{{ skill.student_skills|length }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> No skills in catalog yet.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

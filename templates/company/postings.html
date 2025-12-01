@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Postings{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-briefcase"></i> Internship Postings</h2>
+        <a href="{{ url_for('company.add_posting') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Create New Posting
+        </a>
+    </div>
+    
+    {% if postings %}
+        <div class="row">
+            {% for posting in postings %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title">{{ posting.title }}</h5>
+                            {% if posting.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactive</span>
+                            {% endif %}
+                        </div>
+                        
+                        <p class="card-text">{{ posting.description[:150] }}{% if posting.description|length > 150 %}...{% endif %}</p>
+                        
+                        <div class="mb-3">
+                            {% if posting.location %}
+                            <p class="mb-1"><i class="bi bi-geo-alt"></i> {{ posting.location }}</p>
+                            {% endif %}
+                            {% if posting.duration %}
+                            <p class="mb-1"><i class="bi bi-clock"></i> {{ posting.duration }}</p>
+                            {% endif %}
+                            {% if posting.application_deadline %}
+                            <p class="mb-1"><i class="bi bi-calendar-event"></i> Deadline: {{ posting.application_deadline.strftime('%B %d, %Y') }}</p>
+                            {% endif %}
+                            <p class="mb-1"><i class="bi bi-file-earmark-text"></i> Applications: {{ posting.applications|length }}</p>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <a href="{{ url_for('company.view_posting', posting_id=posting.posting_id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i> View Details
+                            </a>
+                            <form method="POST" action="{{ url_for('company.toggle_posting', posting_id=posting.posting_id) }}" style="display: inline;">
+                                <button type="submit" class="btn btn-sm btn-outline-{{ 'warning' if posting.is_active else 'success' }}">
+                                    <i class="bi bi-{{ 'pause' if posting.is_active else 'play' }}-circle"></i>
+                                    {{ 'Deactivate' if posting.is_active else 'Activate' }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> You haven't created any postings yet. Create your first posting to start receiving applications!
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

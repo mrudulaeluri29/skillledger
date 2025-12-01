@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Students{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-people"></i> Manage Students</h2>
+    
+    {% if students %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Major</th>
+                        <th>Year</th>
+                        <th>Department</th>
+                        <th>Mentor</th>
+                        <th>Internships</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.student_id }}</td>
+                        <td><strong>{{ student.name }}</strong></td>
+                        <td>{{ student.email }}</td>
+                        <td>{{ student.major }}</td>
+                        <td>{{ student.year }}</td>
+                        <td>{{ student.department }}</td>
+                        <td>
+                            {% if student.mentor %}
+                                {{ student.mentor.name }}
+                            {% else %}
+                                <span class="text-muted">Not assigned</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ student.internships|length }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#assignMentor{{ student.student_id }}">
+                                <i class="bi bi-person-plus"></i> Assign Mentor
+                            </button>
+                            
+                            <!-- Modal for assigning mentor -->
+                            <div class="modal fade" id="assignMentor{{ student.student_id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Assign Mentor to {{ student.name }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <form method="POST" action="{{ url_for('admin.assign_mentor', student_id=student.student_id) }}">
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="mentor_id" class="form-label">Select Mentor</label>
+                                                    <select name="mentor_id" id="mentor_id" class="form-select">
+                                                        <option value="">No Mentor</option>
+                                                        {% for mentor in mentors %}
+                                                        <option value="{{ mentor.mentor_id }}" {% if student.mentor_id == mentor.mentor_id %}selected{% endif %}>
+                                                            {{ mentor.name }} ({{ mentor.department }})
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Assign</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No students registered yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

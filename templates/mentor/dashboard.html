@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Mentor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-person-badge"></i> Welcome, {{ current_user.name }}</h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1 class="display-4">{{ students|length }}</h1>
+                    <p class="text-muted">Mentored Students</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1 class="display-4">{{ pending_verifications }}</h1>
+                    <p class="text-muted">Pending Verifications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5><i class="bi bi-people"></i> Quick Actions</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <a href="{{ url_for('mentor.verifications') }}" class="btn btn-primary btn-lg w-100">
+                        <i class="bi bi-shield-check"></i> View Verification Requests
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="{{ url_for('mentor.students') }}" class="btn btn-info btn-lg w-100">
+                        <i class="bi bi-people"></i> View My Students
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if students %}
+    <div class="card">
+        <div class="card-header">
+            <h5><i class="bi bi-list"></i> My Students</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Major</th>
+                            <th>Department</th>
+                            <th>Internships</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students[:10] %}
+                        <tr>
+                            <td><strong>{{ student.name }}</strong></td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.major }}</td>
+                            <td>{{ student.department }}</td>
+                            <td>{{ student.internships|length }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if students|length > 10 %}
+            <a href="{{ url_for('mentor.students') }}" class="btn btn-outline-secondary mt-2">View All Students</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
