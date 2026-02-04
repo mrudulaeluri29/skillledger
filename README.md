@@ -1,6 +1,19 @@
 # SkillLedger - Career Growth Platform
 
-A comprehensive web application for tracking, verifying, and showcasing student internships and professional experiences.
+SkillLedger is a full-stack, database-driven career verification platform designed for academic institutions to manage and validate student internships, skills, and applications across multiple user roles.
+Built with PostgreSQL, it uses a structured relational schema, role-based access control, and a blockchain-inspired SHA-256 verification ledger to ensure data integrity and trust. The platform supports end-to-end workflows for students, mentors, administrators, and companies, backed by analytics and secure authentication.
+
+## Why SkillLedger?
+
+Internship experiences and skills are often fragmented across resumes, PDFs, and unverified claims, making it difficult for recruiters, mentors, and institutions to assess credibility. SkillLedger was built to solve this trust gap.
+
+- **Verified over self-reported**: Internship records are reviewed by assigned mentors and stored in a tamper-resistant verification ledger, ensuring authenticity and accountability.
+- **End-to-end visibility**: Students, mentors, administrators, and companies operate on a single platform with clearly defined, role-based workflows.
+- **Database-first system design**: A normalized PostgreSQL schema, triggers, and relational constraints enforce data integrity beyond application logic.
+- **Security and integrity by design**: Role-based access control, hashed credentials, and a SHA-256 ledger prevent unauthorized actions and retroactive data manipulation.
+- **Actionable insights**: Built-in analytics expose skill trends, mentor activity, and internship distribution to support data-driven decisions.
+
+SkillLedger is designed as a production-style system that prioritizes trust, data integrity, and scalable workflow management over simple CRUD functionality.
 
 ## Features
 
@@ -74,11 +87,10 @@ The application uses the existing `skillledger` schema in PostgreSQL with the fo
    ```
 
 2. **Configure Database**:
-   - Ensure PostgreSQL is running on localhost:5432
-   - Database: `postgres`
-   - Username: `postgres`
-   - Password: `123456789Az#`
-   - The application uses the `skillledger` schema
+   - Ensure PostgreSQL is running on `localhost:5432`
+   - Create a database (e.g. `postgres` or your own custom DB)
+   - Create the `skillledger` schema using the provided SQL file
+   - Configure database credentials via environment variables
 
 3. **Environment Variables**:
    The `.env` file is already configured with:
