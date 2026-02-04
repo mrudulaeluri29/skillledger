@@ -1,6 +1,6 @@
 # SkillLedger - Career Growth Platform
 
-SkillLedger is a full-stack, database-driven career verification platform designed for academic institutions to manage and validate student internships, skills, and applications across multiple user roles.
+SkillLedger is a full-stack, database-driven career verification and growth platform designed for academic institutions to manage and validate student internships, skills, and applications across multiple user roles.
 Built with PostgreSQL, it uses a structured relational schema, role-based access control, and a blockchain-inspired SHA-256 verification ledger to ensure data integrity and trust. The platform supports end-to-end workflows for students, mentors, administrators, and companies, backed by analytics and secure authentication.
 
 ## Why SkillLedger?
